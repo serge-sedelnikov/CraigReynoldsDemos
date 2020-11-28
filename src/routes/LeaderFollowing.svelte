@@ -7,7 +7,7 @@
     let followPattern = 1;
     let vehicleColor = () => {
         return 255;
-    }
+    };
 
     // leader vehicle wandering around
     let leaderTargetTimer;
@@ -55,9 +55,8 @@
             sketch.background(51);
 
             drawFrameRate(sketch);
-            
+
             leaderVehicle.applySeekBehavior();
-           
 
             // need to prevent leader from movign away from screen,
             // flee from the canvas edges
@@ -65,7 +64,6 @@
             leaderVehicle.applyFleeBehavior(WIDTH, leaderVehicle.target.y, 5);
             leaderVehicle.applyFleeBehavior(leaderVehicle.target.x, 0, 5);
             leaderVehicle.applyFleeBehavior(leaderVehicle.target.x, HEIGHT, 5);
-            
 
             leaderVehicle.update();
             leaderVehicle.show("purple");
@@ -82,14 +80,15 @@
                 }
                 // follow previous vehicle
                 else {
-                    const targetVehicle = i === 0 ? leaderVehicle : followers[i - 1];
+                    const targetVehicle =
+                        i === 0 ? leaderVehicle : followers[i - 1];
                     const followingTarget = targetVehicle.getPositionBehind(10);
                     vehicle.setTarget(followingTarget.x, followingTarget.y);
                 }
 
                 vehicle.applySeparateBehavior([...followers, leaderVehicle], {
                     distance: 16,
-                    magnitude: 0.24
+                    magnitude: 0.24,
                 });
                 vehicle.applyArriveBehavior();
                 vehicle.update();
@@ -107,7 +106,11 @@
     });
 </script>
 
-<label>
+<div>
+    <main id="mainCanvas" />
+</div>
+
+<label class="mt-4">
     <input type="radio" bind:group={followPattern} value={1} />
     Follow leader
 </label>
@@ -115,7 +118,3 @@
     <input type="radio" bind:group={followPattern} value={2} />
     Follow each other
 </label>
-
-<div >
-    <main id="mainCanvas" />
-</div>
