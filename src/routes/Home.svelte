@@ -23,7 +23,7 @@
     </q>
 
     <p>
-        <a href="http://www.red3d.com/cwr/">More infor about Craig and the
-            research on steering behaviors</a>
+        <a href="http://www.red3d.com/cwr/" target="blank">More infor about Craig and the
+            research on steering behaviors</a> (opened in new tab)
     </p>
 </div>
