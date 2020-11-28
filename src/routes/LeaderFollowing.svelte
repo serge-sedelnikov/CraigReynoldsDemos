@@ -112,9 +112,51 @@
 
 <label class="mt-4">
     <input type="radio" bind:group={followPattern} value={1} />
-    Follow leader
+    Follow the leader
 </label>
 <label class="ml-3">
     <input type="radio" bind:group={followPattern} value={2} />
     Follow each other
 </label>
+
+<hr/>
+
+<div>
+    The combination of
+    <ul>
+        <li>
+            <a href="http://www.red3d.com/cwr/steer/SeekFlee.html">"seek"</a>
+        </li>
+        <li>
+            <a href="http://www.red3d.com/cwr/steer/Arrival.html">"arrive"</a>
+        </li>
+        <li>
+            <a href="http://www.red3d.com/cwr/steer/SeekFlee.html">"flee"</a>
+        </li>
+    </ul>
+</div>
+
+<p>
+    In this demo the leader vehivle <span class="purple">purpule color</span> is trying to <a href="http://www.red3d.com/cwr/steer/SeekFlee.html">"seek"</a> for the randomly
+    selected target point. New target point is selected every 3 seconds.
+</p>
+
+<p>
+    Select
+    <b>Follow the leader</b>
+    to make all vehicles to try to <a href="http://www.red3d.com/cwr/steer/Arrival.html">"arrive"</a> to the point a bit behind the leader
+    vehicle. To simulate fleet behavior, select
+    <b>Follow each other</b>. Then the vehicles will try to follow one another.
+</p>
+
+<p>
+    In all cases the vehicles also try to avoid collisions by applying <a href="http://www.red3d.com/cwr/steer/SeekFlee.html">"flee"</a>.
+    stearing.
+</p>
+
+<style>
+    .purple {
+        background-color: purple;
+        color: white;
+    }
+</style>
