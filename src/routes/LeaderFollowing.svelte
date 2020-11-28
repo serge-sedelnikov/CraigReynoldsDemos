@@ -137,7 +137,7 @@
 </div>
 
 <p>
-    In this demo the leader vehivle <span class="purple">purpule color</span> is trying to <a href="http://www.red3d.com/cwr/steer/SeekFlee.html">"seek"</a> for the randomly
+    In this demo the leader vehivle <span class="purple">(purpule color)</span> is trying to <a href="http://www.red3d.com/cwr/steer/SeekFlee.html">"seek"</a> for the randomly
     selected target point. New target point is selected every 3 seconds.
 </p>
 
@@ -145,8 +145,16 @@
     Select
     <b>Follow the leader</b>
     to make all vehicles to try to <a href="http://www.red3d.com/cwr/steer/Arrival.html">"arrive"</a> to the point a bit behind the leader
-    vehicle. To simulate fleet behavior, select
-    <b>Follow each other</b>. Then the vehicles will try to follow one another.
+    vehicle. It can remind fish flock behavior.
+    
+    <br/>
+    <img class="img-thumbnail mt-3 mb-3 w-50" src="https://upload.wikimedia.org/wikipedia/commons/f/f4/Yellow_tail_snapper.JPG" alt="fish">
+    <br/>
+    To simulate fleet behavior, select
+    <b>Follow each other</b>. Then the vehicles will try to follow each other one by one as duck and ducklings.
+
+    <br/>
+    <img class="img-thumbnail mt-3 w-50" src="https://upload.wikimedia.org/wikipedia/commons/d/d8/Duck_%26_Ducklings_Morning_Walk.jpg" alt="ducks">
 </p>
 
 <p>
