@@ -10,6 +10,7 @@ class Vehicle {
     maxSpeed = 5;
     maxForce = 0.3;
     _wanderAngle = 0;
+    _obstacleHitBoxLength = 70;
     DEBUG = DEBUG();
 
     /**
@@ -35,12 +36,12 @@ class Vehicle {
         this.vel.add(this.acc);
         this.DEBUG = DEBUG();
 
-        if(this.DEBUG){
-             // render acceleration direction
-             this.sketch.strokeWeight(1);
-             this.sketch.stroke('red');
-             let accelerationVector = this.getAccelerationVector(50);
-             this.sketch.line(this.pos.x, this.pos.y, accelerationVector.x, accelerationVector.y);
+        if (this.DEBUG) {
+            // render acceleration direction
+            this.sketch.strokeWeight(1);
+            this.sketch.stroke('red');
+            let accelerationVector = this.getAccelerationVector(50);
+            this.sketch.line(this.pos.x, this.pos.y, accelerationVector.x, accelerationVector.y);
         }
 
         this.acc.mult(0);
@@ -51,7 +52,7 @@ class Vehicle {
      * @param {*} sketch p5 sketch to show on.
      */
     show(color = 255) {
-        
+
         if (this.DEBUG) {
 
             // render speed direction
@@ -75,7 +76,8 @@ class Vehicle {
      * Shows the future position rectangle.
      */
     showFuturePositionRect() {
-        if(DEBUG()){
+
+        if (DEBUG()) {
             this.sketch.stroke(160);
             this.sketch.strokeWeight(1);
             this.sketch.noFill();
@@ -91,11 +93,35 @@ class Vehicle {
 
             this.sketch.translate(x1, y1);
             this.sketch.rotate(heading);
-            
+
             this.sketch.rectMode(this.sketch.CENTER);
-            this.sketch.rect(35, 0, 70, this.r);
+            this.sketch.rect(this._obstacleHitBoxLength / 2, 0, this._obstacleHitBoxLength, this.r);
             this.sketch.pop();
+
+            // display the point to check if it is inside the obstacle
+            const hitBoxPoint = this.getHitBoxEndPoint();
+            this.sketch.noStroke();
+            this.sketch.fill(170);
+            this.sketch.textAlign(this.sketch.CENTER, this.sketch.CENTER);
+
+            this.sketch.stroke(140, 0, 0);
+            this.sketch.noFill();
+            this.sketch.strokeWeight(2 * this.r / 3)
+            this.sketch.point(hitBoxPoint.x, hitBoxPoint.y);
         }
+    }
+
+    /**
+     * Returns the hit box far end point coordinates.
+     */
+    getHitBoxEndPoint() {
+        let pointInFront = this.pos.copy();
+        let scaledVelocity = this.vel.copy();
+        const velMagnitude = scaledVelocity.mag();
+        const factor = this._obstacleHitBoxLength / velMagnitude;
+        scaledVelocity.mult(factor);
+        pointInFront.add(scaledVelocity);
+        return pointInFront;
     }
 
     /**
@@ -164,15 +190,15 @@ class Vehicle {
     wander() {
         let radius = 50;
         let distance = 100;
-        
+
         // calculate the circle position in <distance> pizels from the current position
         let circleCenter = this.getPositionInFront(distance);
-        
+
         // need to pick up point on the circle with the radius
         // update angle every 100th frame
         const needUpdate = this.sketch.frameCount % 100;
-        
-        if(needUpdate === 0){
+
+        if (needUpdate === 0) {
             this._wanderAngle = this.sketch.random(2 * Math.PI);
         }
 
@@ -182,8 +208,8 @@ class Vehicle {
         let target = this.sketch.createVector(x, y);
         target.add(circleCenter);
 
-        
-        if(this.DEBUG){
+
+        if (this.DEBUG) {
             this.sketch.strokeWeight(1);
             this.sketch.stroke(100);
             this.sketch.noFill();
@@ -193,7 +219,7 @@ class Vehicle {
             this.sketch.point(target.x, target.y);
         }
 
-        
+
         let desired = p5.Vector.sub(target, this.pos);
         desired.setMag(this.maxSpeed);
         let steer = p5.Vector.sub(desired, this.vel);
@@ -204,7 +230,7 @@ class Vehicle {
     /**
      * Applies wander behavior
      */
-    applyWanderBehavior(magnitude = 1){
+    applyWanderBehavior(magnitude = 1) {
         let wander = this.wander();
         wander.setMag(magnitude);
         this.applyForce(wander);
@@ -306,7 +332,7 @@ class Vehicle {
      * Returns the vector behind the vehicle based on velocity and given distance.
      * @param {*} distance Distance.
      */
-    getPositionBehind(distance = 20){
+    getPositionBehind(distance = 20) {
         const followingTarget = this.pos.copy();
         followingTarget.add(this.vel.copy().mult(distance).mult(-1));
         return followingTarget;
@@ -316,7 +342,7 @@ class Vehicle {
      * Returns the vector in front the vehicle based on velocity and given distance.
      * @param {*} distance Distance.
      */
-    getPositionInFront(distance = 20){
+    getPositionInFront(distance = 20) {
         const followingTarget = this.pos.copy();
         followingTarget.add(this.vel.copy().mult(distance));
         return followingTarget;
@@ -326,7 +352,7 @@ class Vehicle {
      * Returns the vector indicating the acceleration
      * @param {*} distance Distance.
      */
-    getAccelerationVector(distance = 20){
+    getAccelerationVector(distance = 20) {
         const followingTarget = this.pos.copy();
         followingTarget.add(this.acc.copy().mult(distance));
         return followingTarget;
