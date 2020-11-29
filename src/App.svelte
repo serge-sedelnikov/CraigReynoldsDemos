@@ -5,6 +5,7 @@
 	import active from "svelte-spa-router/active";
 	import LeaderFollowing from "./routes/LeaderFollowing.svelte";
 	import { DEBUG, setDebug } from "./constants";
+import Obstacles from "./routes/Obstacles.svelte";
 
 	const routes = {
 		"/": Home,
@@ -12,6 +13,8 @@
 		"/arriving": Arriving,
 
 		"/leader-follow": LeaderFollowing,
+
+		"/obstacles-avoidance": Obstacles,
 
 		"*": Home,
 	};
@@ -71,6 +74,12 @@
 								class="nav-link active"
 								use:active
 								href="#/leader-follow">Leader following</a>
+						</li>
+						<li class="nav-item">
+							<a
+								class="nav-link active"
+								use:active
+								href="#/obstacles-avoidance">Obstacles avoidance</a>
 						</li>
 
 						<li class="nav-item mt-4">
