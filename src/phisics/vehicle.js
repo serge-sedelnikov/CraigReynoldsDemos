@@ -72,6 +72,33 @@ class Vehicle {
     }
 
     /**
+     * Shows the future position rectangle.
+     */
+    showFuturePositionRect() {
+        if(DEBUG()){
+            this.sketch.stroke(160);
+            this.sketch.strokeWeight(1);
+            this.sketch.noFill();
+
+            // calculate rectangle position
+            const x1 = this.pos.x;
+            const y1 = this.pos.y;
+            // also need to rotate it towards velocity vector angle
+            const velocityVector = this.getPositionInFront();
+            velocityVector.sub(this.pos);
+            const heading = velocityVector.heading();
+            this.sketch.push();
+
+            this.sketch.translate(x1, y1);
+            this.sketch.rotate(heading);
+            
+            this.sketch.rectMode(this.sketch.CENTER);
+            this.sketch.rect(35, 0, 70, this.r);
+            this.sketch.pop();
+        }
+    }
+
+    /**
      * Accumulates behaviours.
      */
     behaviors(vehicles) {

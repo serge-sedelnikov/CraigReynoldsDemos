@@ -67,6 +67,7 @@
 
             leaderVehicle.update();
             leaderVehicle.show("purple");
+            leaderVehicle.showFuturePositionRect();
 
             // draw obstacles
             for(let i = 0; i<obstacles.length; i++){
@@ -90,3 +91,5 @@
 </div>
 
 <hr />
+
+Click mouse left button to create an obstacle 🖱️

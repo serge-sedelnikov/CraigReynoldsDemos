@@ -16,6 +16,7 @@ module.exports = {
     drawFrameRate: (sketch) => {
         if(isDebug){
             const fps = sketch.frameRate();
+            sketch.textAlign(sketch.LEFT, sketch.CENTER);
             sketch.fill(255);
             sketch.stroke(0);
             sketch.text("FPS: " + fps.toFixed(2), 10, height - 10);
