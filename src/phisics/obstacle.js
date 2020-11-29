@@ -4,6 +4,7 @@ import { WIDTH, HEIGHT, DEBUG } from '../constants';
 
 class Obstacle {
     r = 20;
+    hit = false;
 
     /**
      * Creates an obstacle.
@@ -12,9 +13,9 @@ class Obstacle {
      * @param {*} y center Y
      * @param {*} r radius
      */
-    constructor(sketch, x, y, r = 20) {
+    constructor(sketch, x, y) {
         this.pos = sketch.createVector(x, y);
-        this.r = r;
+        this.r = 40;
         this.sketch = sketch;
     }
 
@@ -23,9 +24,13 @@ class Obstacle {
      */
     show() {
         this.sketch.noFill();
-        this.sketch.stroke(200);
+        this.sketch.stroke(this.hit ? 'red' : 200);
         this.sketch.strokeWeight(1);
         this.sketch.circle(this.pos.x, this.pos.y, this.r * 2);
+
+        this.sketch.strokeWeight(this.r / 3);
+        this.sketch.stroke('yellow');
+        this.sketch.point(this.pos.x, this.pos.y);
 
         if (DEBUG()) {
             this.sketch.noStroke();

@@ -10,7 +10,7 @@ class Vehicle {
     maxSpeed = 5;
     maxForce = 0.3;
     _wanderAngle = 0;
-    _obstacleHitBoxLength = 70;
+    _obstacleHitBoxLength = 20;
     DEBUG = DEBUG();
 
     /**
@@ -40,7 +40,7 @@ class Vehicle {
             // render acceleration direction
             this.sketch.strokeWeight(1);
             this.sketch.stroke('red');
-            let accelerationVector = this.getAccelerationVector(50);
+            let accelerationVector = this.getAccelerationVector(150);
             this.sketch.line(this.pos.x, this.pos.y, accelerationVector.x, accelerationVector.y);
         }
 
@@ -315,6 +315,55 @@ class Vehicle {
         }
         return sum;
     };
+
+    /**
+     * Avoids obstacles by applying force pointing away from their center
+     * @param {*} obstacles List of obstacles
+     */
+    avoidObstacles(obstacles) {
+        let sum = new p5.Vector();
+        let count = 0;
+        // For every obstacle in the system, check if hit box point is inside it
+        obstacles.forEach(obstacle => {
+            let d = p5.Vector.dist(this.pos, obstacle.pos);
+            // If the distance is greater than 0 and less than an arbitrary amount (0 when you are yourself)
+            if ((d > 0) && (d < obstacle.r + this._obstacleHitBoxLength)) {
+                obstacle.hit = true;
+                // Calculate vector pointing away from neighbor
+                let diff = p5.Vector.sub(this.pos, obstacle.pos);
+                diff.normalize();
+                diff.div(d);        // Weight by distance
+                sum.add(diff);
+                count++;            // Keep track of how many
+            } else {
+                obstacle.hit = false;
+            }
+        });
+        // Average -- divide by how many
+        if (count > 0) {
+            sum.div(count);
+            // Our desired vector is the average scaled to maximum speed
+            sum.normalize();
+            sum.mult(this.maxSpeed);
+            // Implement Reynolds: Steering = Desired - Velocity
+            sum.sub(this.vel);
+            sum.limit(this.maxForce);
+        }
+
+        return sum;
+    }
+
+    /**
+     * Apply avoiding obstacles behavior.
+     * @param {*} obstacles 
+     */
+    applyAvoidObstaclesBehavior(obstacles, options = {}) {
+        let separate = this.avoidObstacles(obstacles);
+        if (options.magnitude) {
+            separate.setMag(options.magnitude);
+        }
+        this.applyForce(separate);
+    }
 
     /**
      * Apply separate behavior from other vehicles.

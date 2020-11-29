@@ -23,8 +23,9 @@
             leaderVehicle.r = 12;
 
             // create obstacles
-            obstacles.push(new Obstacle(sketch, 40, 50, 20));
-            obstacles.push(new Obstacle(sketch, 180, 200, 40));
+            for(let i = 0; i < 4; i++){
+                addRandomObstacle();
+            }
 
             // start timer to randomly update target of the vehicle
             leaderTargetTimer = setInterval(() => {
@@ -38,12 +39,19 @@
             }, 3000);
         };
 
-        sketch.mouseClicked = () => {
-            const x = sketch.ceil(sketch.mouseX);
-            const y = sketch.ceil(sketch.mouseY);
+        /**
+         * Adds random obstacle.
+         */
+        const addRandomObstacle = (x, y) => {
+            const resX = sketch.ceil(x || sketch.random(WIDTH));
+            const resY = sketch.ceil(y || sketch.random(HEIGHT));
             const r = sketch.ceil(sketch.random(10, 40));
-            const o = new Obstacle(sketch, x, y, r);
+            const o = new Obstacle(sketch, resX, resY, r);
             obstacles.push(o);
+        }
+
+        sketch.mouseClicked = () => {
+            addRandomObstacle(sketch.mouseX, sketch.mouseY);
         }
 
         sketch.setup = () => {
@@ -56,7 +64,7 @@
 
             drawFrameRate(sketch);
 
-            leaderVehicle.applyArriveBehavior();
+            
 
             // need to prevent leader from movign away from screen,
             // flee from the canvas edges
@@ -68,6 +76,13 @@
             leaderVehicle.update();
             leaderVehicle.show("purple");
             leaderVehicle.showFuturePositionRect();
+
+            // apply force to avoid obstacles
+            leaderVehicle.applyAvoidObstaclesBehavior(obstacles, {
+                magnitude: 0.06
+            });
+
+            leaderVehicle.applySeekBehavior();
 
             // draw obstacles
             for(let i = 0; i<obstacles.length; i++){
