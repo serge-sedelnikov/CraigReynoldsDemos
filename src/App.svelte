@@ -64,7 +64,7 @@
 							<a
 								class="nav-link active"
 								use:active
-								href="#/arriving">Arriving</a>
+								href="#/arriving">Arriving and fleeing</a>
 						</li>
 						<li class="nav-item">
 							<a
