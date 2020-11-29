@@ -10,7 +10,8 @@ class Vehicle {
     maxSpeed = 5;
     maxForce = 0.3;
     _wanderAngle = 0;
-    _obstacleHitBoxLength = 20;
+    _obstacleHitBoxLength = 26;
+    _obstacleHitRadius = this.r * 2.2;
     DEBUG = DEBUG();
 
     /**
@@ -40,7 +41,7 @@ class Vehicle {
             // render acceleration direction
             this.sketch.strokeWeight(1);
             this.sketch.stroke('red');
-            let accelerationVector = this.getAccelerationVector(150);
+            let accelerationVector = this.getAccelerationVector(50);
             this.sketch.line(this.pos.x, this.pos.y, accelerationVector.x, accelerationVector.y);
         }
 
@@ -77,36 +78,47 @@ class Vehicle {
      */
     showFuturePositionRect() {
 
+        // if (DEBUG()) {
+        //     this.sketch.stroke(160);
+        //     this.sketch.strokeWeight(1);
+        //     this.sketch.noFill();
+
+        //     // calculate rectangle position
+        //     const x1 = this.pos.x;
+        //     const y1 = this.pos.y;
+        //     // also need to rotate it towards velocity vector angle
+        //     const velocityVector = this.getPositionInFront();
+        //     velocityVector.sub(this.pos);
+        //     const heading = velocityVector.heading();
+        //     this.sketch.push();
+
+        //     this.sketch.translate(x1, y1);
+        //     this.sketch.rotate(heading);
+
+        //     this.sketch.rectMode(this.sketch.CENTER);
+        //     this.sketch.rect(this._obstacleHitBoxLength / 2, 0, this._obstacleHitBoxLength, this.r);
+        //     this.sketch.pop();
+
+        //     // display the point to check if it is inside the obstacle
+        //     const hitBoxPoint = this.getHitBoxEndPoint();
+        //     this.sketch.noStroke();
+        //     this.sketch.fill(170);
+        //     this.sketch.textAlign(this.sketch.CENTER, this.sketch.CENTER);
+
+        //     this.sketch.stroke(140, 0, 0);
+        //     this.sketch.noFill();
+        //     this.sketch.strokeWeight(2 * this.r / 3)
+        //     this.sketch.point(hitBoxPoint.x, hitBoxPoint.y);
+        // }
+
         if (DEBUG()) {
-            this.sketch.stroke(160);
+            // draw the circle - aka hitbox to check 
+            const hitBoxPoint = this.getHitBoxEndPoint();
+            this.sketch.stroke(140, 0, 0);
             this.sketch.strokeWeight(1);
             this.sketch.noFill();
-
-            // calculate rectangle position
-            const x1 = this.pos.x;
-            const y1 = this.pos.y;
-            // also need to rotate it towards velocity vector angle
-            const velocityVector = this.getPositionInFront();
-            velocityVector.sub(this.pos);
-            const heading = velocityVector.heading();
-            this.sketch.push();
-
-            this.sketch.translate(x1, y1);
-            this.sketch.rotate(heading);
-
-            this.sketch.rectMode(this.sketch.CENTER);
-            this.sketch.rect(this._obstacleHitBoxLength / 2, 0, this._obstacleHitBoxLength, this.r);
-            this.sketch.pop();
-
-            // display the point to check if it is inside the obstacle
-            const hitBoxPoint = this.getHitBoxEndPoint();
-            this.sketch.noStroke();
-            this.sketch.fill(170);
-            this.sketch.textAlign(this.sketch.CENTER, this.sketch.CENTER);
-
-            this.sketch.stroke(140, 0, 0);
-            this.sketch.noFill();
-            this.sketch.strokeWeight(2 * this.r / 3)
+            this.sketch.circle(hitBoxPoint.x, hitBoxPoint.y, this._obstacleHitRadius * 2);
+            this.sketch.strokeWeight(2 * this.r / 3);
             this.sketch.point(hitBoxPoint.x, hitBoxPoint.y);
         }
     }
@@ -324,21 +336,41 @@ class Vehicle {
         let sum = new p5.Vector();
         let count = 0;
         // For every obstacle in the system, check if hit box point is inside it
-        obstacles.forEach(obstacle => {
-            let d = p5.Vector.dist(this.pos, obstacle.pos);
-            // If the distance is greater than 0 and less than an arbitrary amount (0 when you are yourself)
-            if ((d > 0) && (d < obstacle.r + this._obstacleHitBoxLength)) {
+        // for(let i = 0; i<obstacles.length; i++){
+        //     const obstacle = obstacles[i];
+        //     let d = p5.Vector.dist(this.pos, obstacle.pos);
+        //     // If the distance is greater than 0 and less than an arbitrary amount (0 when you are yourself)
+        //     if ((d > 0) && (d < obstacle.r + this._obstacleHitBoxLength)) {
+        //         obstacle.hit = true;
+        //         // Calculate vector pointing away from neighbor
+        //         let diff = p5.Vector.sub(this.pos, obstacle.pos);
+        //         sum.add(diff);
+        //         count++;            // Keep track of how many
+        //         break;
+        //     } else {
+        //         obstacle.hit = false;
+        //     }
+        // }
+
+        for (let i = 0; i < obstacles.length; i++) {
+            const obstacle = obstacles[i];
+            const hitBoxPoint = this.getHitBoxEndPoint();
+            const hitBoxRadius = this._obstacleHitRadius;
+            // if hitbox circle crosses the obstacle circle
+            let d = p5.Vector.dist(hitBoxPoint, obstacle.pos);
+
+            if (d < obstacle.r + hitBoxRadius) {
                 obstacle.hit = true;
-                // Calculate vector pointing away from neighbor
-                let diff = p5.Vector.sub(this.pos, obstacle.pos);
+                let diff = p5.Vector.sub(hitBoxPoint, obstacle.pos);
                 diff.normalize();
                 diff.div(d);        // Weight by distance
                 sum.add(diff);
-                count++;            // Keep track of how many
+                count++;
             } else {
                 obstacle.hit = false;
             }
-        });
+        }
+
         // Average -- divide by how many
         if (count > 0) {
             sum.div(count);

@@ -5,15 +5,12 @@
     import Obstacle from "../phisics/obstacle";
     import { WIDTH, HEIGHT, drawFrameRate } from "../constants";
 
-    // leader vehicle wandering around
-    let leaderTargetTimer;
-
     const s = (sketch) => {
         let leaderVehicle;
         let obstacles = [];
 
         sketch.preload = () => {
-            const maxForce = 0.04;
+            const maxForce = 0.7;
             const maxSpeed = 1.3;
 
             // create leader vehicle
@@ -26,17 +23,6 @@
             for(let i = 0; i < 4; i++){
                 addRandomObstacle();
             }
-
-            // start timer to randomly update target of the vehicle
-            leaderTargetTimer = setInterval(() => {
-                if (!leaderVehicle) {
-                    return;
-                }
-                leaderVehicle.setTarget(
-                    sketch.random(WIDTH),
-                    sketch.random(HEIGHT)
-                );
-            }, 3000);
         };
 
         /**
@@ -64,7 +50,7 @@
 
             drawFrameRate(sketch);
 
-            
+            leaderVehicle.setTarget(sketch.mouseX, sketch.mouseY);
 
             // need to prevent leader from movign away from screen,
             // flee from the canvas edges
@@ -79,10 +65,10 @@
 
             // apply force to avoid obstacles
             leaderVehicle.applyAvoidObstaclesBehavior(obstacles, {
-                magnitude: 0.06
+                magnitude: 1.05
             });
 
-            leaderVehicle.applySeekBehavior();
+            leaderVehicle.applyArriveBehavior();
 
             // draw obstacles
             for(let i = 0; i<obstacles.length; i++){
@@ -96,7 +82,6 @@
         let mp5 = new p5(s, document.getElementById("mainCanvas"));
         return () => {
             mp5.remove();
-            clearInterval(leaderTargetTimer);
         };
     });
 </script>
@@ -107,4 +92,4 @@
 
 <hr />
 
-Click mouse left button to create an obstacle 🖱️
+Move your mouse to make vehicle "arrive" to it. Click mouse left button to create an obstacle 🖱️
