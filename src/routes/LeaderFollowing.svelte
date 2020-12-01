@@ -7,7 +7,7 @@
     let followPattern = 1;
     let vehicleColor = () => {
         return 255;
-    }
+    };
 
     // leader vehicle wandering around
     let leaderTargetTimer;
@@ -55,9 +55,8 @@
             sketch.background(51);
 
             drawFrameRate(sketch);
-            
+
             leaderVehicle.applySeekBehavior();
-           
 
             // need to prevent leader from movign away from screen,
             // flee from the canvas edges
@@ -65,7 +64,6 @@
             leaderVehicle.applyFleeBehavior(WIDTH, leaderVehicle.target.y, 5);
             leaderVehicle.applyFleeBehavior(leaderVehicle.target.x, 0, 5);
             leaderVehicle.applyFleeBehavior(leaderVehicle.target.x, HEIGHT, 5);
-            
 
             leaderVehicle.update();
             leaderVehicle.show("purple");
@@ -82,14 +80,15 @@
                 }
                 // follow previous vehicle
                 else {
-                    const targetVehicle = i === 0 ? leaderVehicle : followers[i - 1];
+                    const targetVehicle =
+                        i === 0 ? leaderVehicle : followers[i - 1];
                     const followingTarget = targetVehicle.getPositionBehind(10);
                     vehicle.setTarget(followingTarget.x, followingTarget.y);
                 }
 
                 vehicle.applySeparateBehavior([...followers, leaderVehicle], {
                     distance: 16,
-                    magnitude: 0.24
+                    magnitude: 0.24,
                 });
                 vehicle.applyArriveBehavior();
                 vehicle.update();
@@ -107,15 +106,65 @@
     });
 </script>
 
-<label>
+<div>
+    <main id="mainCanvas" />
+</div>
+
+<label class="mt-4">
     <input type="radio" bind:group={followPattern} value={1} />
-    Follow leader
+    Follow the leader
 </label>
 <label class="ml-3">
     <input type="radio" bind:group={followPattern} value={2} />
     Follow each other
 </label>
 
-<div >
-    <main id="mainCanvas" />
+<hr/>
+
+<div>
+    The combination of
+    <ul>
+        <li>
+            <a href="http://www.red3d.com/cwr/steer/SeekFlee.html">"seek"</a>
+        </li>
+        <li>
+            <a href="http://www.red3d.com/cwr/steer/Arrival.html">"arrive"</a>
+        </li>
+        <li>
+            <a href="http://www.red3d.com/cwr/steer/SeekFlee.html">"flee"</a>
+        </li>
+    </ul>
 </div>
+
+<p>
+    In this demo the leader vehivle <span class="purple">(purpule color)</span> is trying to <a href="http://www.red3d.com/cwr/steer/SeekFlee.html">"seek"</a> for the randomly
+    selected target point. New target point is selected every 3 seconds.
+</p>
+
+<p>
+    Select
+    <b>Follow the leader</b>
+    to make all vehicles to try to <a href="http://www.red3d.com/cwr/steer/Arrival.html">"arrive"</a> to the point a bit behind the leader
+    vehicle. It can remind fish flock behavior.
+    
+    <br/>
+    <img class="img-thumbnail mt-3 mb-3 w-50" src="https://upload.wikimedia.org/wikipedia/commons/f/f4/Yellow_tail_snapper.JPG" alt="fish">
+    <br/>
+    To simulate fleet behavior, select
+    <b>Follow each other</b>. Then the vehicles will try to follow each other one by one as duck and ducklings.
+
+    <br/>
+    <img class="img-thumbnail mt-3 w-50" src="https://upload.wikimedia.org/wikipedia/commons/d/d8/Duck_%26_Ducklings_Morning_Walk.jpg" alt="ducks">
+</p>
+
+<p>
+    In all cases the vehicles also try to avoid collisions by applying <a href="http://www.red3d.com/cwr/steer/SeekFlee.html">"flee"</a>.
+    stearing.
+</p>
+
+<style>
+    .purple {
+        background-color: purple;
+        color: white;
+    }
+</style>
