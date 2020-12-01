@@ -19,6 +19,9 @@
             vehicles.push(new Vehicle(sketch, WIDTH / 2, HEIGHT / 2));
             vehicles.push(new Vehicle(sketch, WIDTH / 2, HEIGHT / 2));
             vehicles.push(new Vehicle(sketch, WIDTH / 2, HEIGHT / 2));
+            vehicles.forEach((v) => {
+                v.setTarget(sketch.random(WIDTH), sketch.random(HEIGHT));
+            });
 
             vehicles.forEach((v) => {
                 v.maxForce = 0.5;
@@ -31,7 +34,7 @@
                 vehicles.forEach((v) => {
                     v.setTarget(sketch.random(WIDTH), sketch.random(HEIGHT));
                 });
-            }, 3000);
+            }, 10000);
         };
 
         sketch.setup = () => {
@@ -52,7 +55,7 @@
                 vehicle.applyArriveBehavior();
                 vehicle.applyFieldReactBehavior(field);
                 vehicle.applySeparateBehavior(vehicles, {
-                    magnitude: 0.5
+                    magnitude: 0.5,
                 });
 
                 vehicle.update();

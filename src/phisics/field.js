@@ -5,7 +5,7 @@ class Field {
 
     xoff = 0;
     cellSize = 20;
-    maxForce = 0.4;
+    maxForce = 0.41;
     forces = [];
 
     constructor(sketch) {
@@ -68,7 +68,7 @@ class Field {
 
         // draw
         this.sketch.noFill();
-        this.sketch.stroke('#b3a87f');
+        this.sketch.stroke(80);
         this.sketch.strokeWeight(1);
 
         for (let i = 0; i < this.forces.length; i++) {
@@ -96,14 +96,16 @@ class Field {
         const angle = this.forces[i];
         let resultVector = this.sketch.createVector(1, 1);
         resultVector.rotate(angle);
-        resultVector.limit(this.maxForce);
+        resultVector.limit(this.maxForce); 
+        
 
         if (DEBUG()) {
-            const multForce = resultVector.copy().mult(this.maxForce * 100);
+            const multForce = resultVector.copy().mult(this.maxForce * -100);
+            multForce.rotate(Math.PI / 4)
             const forceVector = p5.Vector.sub(point, multForce);
-            this.sketch.stroke('yellow');
+            this.sketch.stroke('magenta');
             this.sketch.strokeWeight(1);
-            this.sketch.line(forceVector.x, forceVector.y, point.x, point.y);
+            this.sketch.line(point.x, point.y, forceVector.x, forceVector.y);
         }
 
         return resultVector;
