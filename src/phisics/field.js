@@ -28,18 +28,21 @@ class Field {
 
         const length = 2 * this.cols * this.rows;
         const noise = this.sketch.noise(this.xoff) * (Math.PI * 2);
-        // console.log(noise)
+        
+        // change noise factor, but make it max 10 to save memory
         this.xoff += 0.01;
-        this.xoff = this.xoff % 1000;
+        this.xoff = this.xoff % 10;
 
         for (let i = 0; i < length; i++) {
             const x = this.sketch.floor(i % this.cols);
             const y = this.sketch.floor(i / this.cols);
             
+            // calculate angle that is making a circle out of vector field
             const coordinates = this.sketch.createVector(x, y);
             const center = this.sketch.createVector(this.cols / 2, this.rows / 2);
             const circleAngle = coordinates.sub(center).heading();
 
+            // add noice factor to simulate wind
             this.forces[i] = noise + circleAngle;
         }
     }
@@ -65,7 +68,7 @@ class Field {
 
         // draw
         this.sketch.noFill();
-        this.sketch.stroke('#e0d29b');
+        this.sketch.stroke('#b3a87f');
         this.sketch.strokeWeight(1);
 
         for (let i = 0; i < this.forces.length; i++) {
