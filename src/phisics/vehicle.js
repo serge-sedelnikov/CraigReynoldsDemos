@@ -438,6 +438,18 @@ class Vehicle {
         followingTarget.add(this.acc.copy().mult(distance));
         return followingTarget;
     }
+
+    /**
+     * Applies the force of the field making vehicle to react on it
+     * @param {*} field 
+     */
+    applyFieldReactBehavior(field, options = {}) {
+        const force = field.getForceVector(this.pos);
+        if (options.magnitude) {
+            separate.setMag(options.magnitude);
+        }
+        this.applyForce(force);
+    }
 }
 
 export default Vehicle;

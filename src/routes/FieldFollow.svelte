@@ -5,26 +5,34 @@
     import Field from "../phisics/field";
     import { WIDTH, HEIGHT, drawFrameRate } from "../constants";
 
+    let leaderTargetTimer;
+
     const s = (sketch) => {
         let field;
-        let vehicles = []
+        let vehicles = [];
 
         sketch.preload = () => {
             field = new Field(sketch);
 
             vehicles.push(new Vehicle(sketch, WIDTH / 2, HEIGHT / 2));
-            vehicles.forEach(v => {
+            vehicles.push(new Vehicle(sketch, WIDTH / 2, HEIGHT / 2));
+            vehicles.push(new Vehicle(sketch, WIDTH / 2, HEIGHT / 2));
+            vehicles.push(new Vehicle(sketch, WIDTH / 2, HEIGHT / 2));
+            vehicles.push(new Vehicle(sketch, WIDTH / 2, HEIGHT / 2));
+
+            vehicles.forEach((v) => {
                 v.maxForce = 0.5;
                 v.maxSpeed = 1;
                 v.r = 12;
-            })
-        };
+            });
 
-        sketch.mouseClicked = () => {
-            vehicles.forEach(v => {
-                v.setTarget(sketch.mouseX, sketch.mouseY);
-            })
-        }
+            // start timer to randomly update target of the vehicle
+            leaderTargetTimer = setInterval(() => {
+                vehicles.forEach((v) => {
+                    v.setTarget(sketch.random(WIDTH), sketch.random(HEIGHT));
+                });
+            }, 3000);
+        };
 
         sketch.setup = () => {
             sketch.createCanvas(WIDTH, HEIGHT);
@@ -39,13 +47,17 @@
             field.show();
 
             // show vehicles
-            for(let i = 0; i < vehicles.length; i++){
+            for (let i = 0; i < vehicles.length; i++) {
                 const vehicle = vehicles[i];
                 vehicle.applyArriveBehavior();
+                vehicle.applyFieldReactBehavior(field);
+                vehicle.applySeparateBehavior(vehicles, {
+                    magnitude: 0.5
+                });
+
                 vehicle.update();
-                vehicle.show();   
+                vehicle.show();
             }
-            
 
             drawFrameRate(sketch);
         };
@@ -55,6 +67,7 @@
         let mp5 = new p5(s, document.getElementById("mainCanvas"));
         return () => {
             mp5.remove();
+            clearInterval(leaderTargetTimer);
         };
     });
 </script>
