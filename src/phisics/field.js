@@ -3,6 +3,7 @@ import { WIDTH, HEIGHT, DEBUG } from '../constants';
 
 class Field {
 
+    xoff = 0;
     cellSize = 20;
     maxForce = 1.3;
     forces = [];
@@ -20,9 +21,26 @@ class Field {
      * Randomly updates the force fields
      */
     update() {
-        const length = this.cols * this.rows;
+        
+        // if(this.sketch.frameCount % 5 !== 0){
+        //     return;
+        // }
+
+        const length = 2 * this.cols * this.rows;
+        const noise = this.sketch.noise(this.xoff) * (Math.PI * 2);
+        // console.log(noise)
+        this.xoff += 0.01;
+        this.xoff = this.xoff % 1000;
+
         for (let i = 0; i < length; i++) {
-            this.forces[i] = Math.PI / 4.0;
+            const x = this.sketch.floor(i % this.cols);
+            const y = this.sketch.floor(i / this.cols);
+            
+            const coordinates = this.sketch.createVector(x, y);
+            const center = this.sketch.createVector(this.cols / 2, this.rows / 2);
+            const circleAngle = coordinates.sub(center).heading();
+
+            this.forces[i] = noise + circleAngle;
         }
     }
 
@@ -47,19 +65,17 @@ class Field {
 
         // draw
         this.sketch.noFill();
-        this.sketch.stroke('yellow');
+        this.sketch.stroke('#e0d29b');
         this.sketch.strokeWeight(1);
 
         for (let i = 0; i < this.forces.length; i++) {
             const x = this.sketch.floor(i % this.cols) * this.cellSize;
             const y = this.sketch.floor(i / this.cols) * this.cellSize;
             const angle = this.forces[i];
-
         
             this.sketch.push();
-            
             this.sketch.translate(x, y);
-            this.sketch.rotate(-angle);
+            this.sketch.rotate(angle);
             this.sketch.line(0, 0, 0, this.cellSize);
             this.sketch.pop();
         }

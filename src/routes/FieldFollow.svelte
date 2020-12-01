@@ -24,6 +24,7 @@
 
             
             // show force fields
+            field.update();
             field.show();
 
             drawFrameRate(sketch);
