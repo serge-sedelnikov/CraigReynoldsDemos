@@ -12,7 +12,7 @@
             element.innerHTML = marked(content, {
                 gfm: true,
                 breaks: true,
-                smartypants: true
+                smartypants: true,
             });
         }
     });
