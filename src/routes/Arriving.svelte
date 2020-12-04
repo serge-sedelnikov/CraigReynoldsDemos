@@ -2,6 +2,7 @@
     import p5 from "p5";
     import { onMount } from "svelte";
     import Vehicle from "../phisics/vehicle";
+    import Markdown from "../Markdown.svelte";
     import { WIDTH, HEIGHT, drawFrameRate } from "../constants";
 
     let word = "ARRIVE";
@@ -54,23 +55,4 @@
 
 <hr/>
 
-<div>
-    The combination of
-    <ul>
-        <li>
-            <a href="http://www.red3d.com/cwr/steer/Arrival.html">"arrive"</a>
-        </li>
-        <li>
-            <a href="http://www.red3d.com/cwr/steer/SeekFlee.html">"flee"</a>
-        </li>
-    </ul>
-</div>
-
-<p>
-    In this demo all vehicles are trying to arrive to their place in the word
-    "ARRIVE", but then, when mouse pointer is moved towards them, they try to escape from it, using <a href="http://www.red3d.com/cwr/steer/SeekFlee.html">"flee"</a> stearing behavior.
-</p>
-
-<p>
-    Move the mouse over the word 🖱️
-</p>
+<Markdown file="/docs/Arrive.md"/>

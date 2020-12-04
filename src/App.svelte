@@ -6,6 +6,7 @@
 	import LeaderFollowing from "./routes/LeaderFollowing.svelte";
 	import { DEBUG, setDebug } from "./constants";
 import Obstacles from "./routes/Obstacles.svelte";
+import FieldFollow from "./routes/FieldFollow.svelte";
 
 	const routes = {
 		"/": Home,
@@ -15,6 +16,8 @@ import Obstacles from "./routes/Obstacles.svelte";
 		"/leader-follow": LeaderFollowing,
 
 		"/obstacles-avoidance": Obstacles,
+
+		"/field-following": FieldFollow,
 
 		"*": Home,
 	};
@@ -80,6 +83,13 @@ import Obstacles from "./routes/Obstacles.svelte";
 								class="nav-link active"
 								use:active
 								href="#/obstacles-avoidance">Obstacles avoidance</a>
+						</li>
+
+						<li class="nav-item">
+							<a
+								class="nav-link active"
+								use:active
+								href="#/field-following">Field following</a>
 						</li>
 
 						<li class="nav-item mt-4">
