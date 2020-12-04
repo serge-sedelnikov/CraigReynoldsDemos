@@ -64,6 +64,8 @@ button:focus {
 
 a {
 	text-decoration: underline !important;
+	background-color: rgb(255, 255, 200) !important;
+	padding: 4px;
 }
 
 pre{
@@ -77,11 +79,9 @@ blockquote {
 	border-left: 10px solid #ccc;
 	margin: 1.5em 10px;
 	padding: 0.5em 10px;
-	quotes: "\201C""\201D""\2018""\2019";
   }
   blockquote:before {
 	color: #ccc;
-	content: open-quote;
 	font-size: 4em;
 	line-height: 0.1em;
 	margin-right: 0.25em;
@@ -90,3 +90,9 @@ blockquote {
   blockquote p {
 	display: inline;
   }
+
+  .purple {
+	background-color: purple;
+	color: white;
+	padding: 4px;
+}

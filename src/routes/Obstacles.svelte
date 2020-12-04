@@ -4,6 +4,7 @@
     import Vehicle from "../phisics/vehicle";
     import Obstacle from "../phisics/obstacle";
     import { WIDTH, HEIGHT, drawFrameRate } from "../constants";
+import Markdown from "../Markdown.svelte";
 
     const s = (sketch) => {
         let leaderVehicle;
@@ -92,4 +93,4 @@
 
 <hr />
 
-Move your mouse to make vehicle "arrive" to it. Click mouse left button to create an obstacle 🖱️
+<Markdown file="/docs/Obstacle.md"/>

@@ -52,7 +52,7 @@
             // show vehicles
             for (let i = 0; i < vehicles.length; i++) {
                 const vehicle = vehicles[i];
-                vehicle.applyArriveBehavior();
+                vehicle.applySeekBehavior();
                 vehicle.applyFieldReactBehavior(field);
                 vehicle.applySeparateBehavior(vehicles, {
                     magnitude: 0.5,

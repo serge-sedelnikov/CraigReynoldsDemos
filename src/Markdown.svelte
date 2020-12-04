@@ -19,8 +19,8 @@
 </script>
 
 <style>
-    .markdownContainer {
-        white-space: pre-line;
+    .markdownContainer p img {
+        width: 40%;
     }
 </style>
 
