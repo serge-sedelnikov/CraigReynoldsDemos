@@ -4,8 +4,10 @@
     import Vehicle from "../phisics/vehicle";
     import Field from "../phisics/field";
     import { WIDTH, HEIGHT, drawFrameRate } from "../constants";
+    import Markdown from "../Markdown.svelte";
 
     let leaderTargetTimer;
+    let arriveTarget = true;
 
     const s = (sketch) => {
         let field;
@@ -25,14 +27,19 @@
 
             vehicles.forEach((v) => {
                 v.maxForce = 0.5;
-                v.maxSpeed = 1;
+                v.maxSpeed = 2;
                 v.r = 12;
             });
 
             // start timer to randomly update target of the vehicle
             leaderTargetTimer = setInterval(() => {
                 vehicles.forEach((v) => {
-                    v.setTarget(sketch.random(WIDTH), sketch.random(HEIGHT));
+                    if (arriveTarget) {
+                        v.setTarget(
+                            sketch.random(WIDTH),
+                            sketch.random(HEIGHT)
+                        );
+                    }
                 });
             }, 10000);
         };
@@ -52,7 +59,7 @@
             // show vehicles
             for (let i = 0; i < vehicles.length; i++) {
                 const vehicle = vehicles[i];
-                vehicle.applySeekBehavior();
+                vehicle.applyArriveBehavior();
                 vehicle.applyFieldReactBehavior(field);
                 vehicle.applySeparateBehavior(vehicles, {
                     magnitude: 0.5,
@@ -79,17 +86,15 @@
     <main id="mainCanvas" />
 </div>
 
+<label class="mt-4">
+    <input type="radio" bind:group={arriveTarget} value={true} />
+    Change target every 10 seconds
+</label>
+<label class="ml-3">
+    <input type="radio" bind:group={arriveTarget} value={false} />
+    Keep current  target position
+</label>
+
 <hr />
 
-<p>
-    The field simulates an unstable envoriment, similar to wind in the open air.
-    The vehicle or a dron is trying to either stay on place or to "arrive" to a
-    new target point.
-</p>
-
-<p>
-    The firld adds the force vector to the vehicle trying to move it along the
-    wind direction and force. Wind force is also changing randomly.
-</p>
-
-<p>Random fluctuations are implemented as perlin noise.</p>
+<Markdown file="/docs/Field.md" />

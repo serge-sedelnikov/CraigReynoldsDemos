@@ -7,3 +7,14 @@
 > ---Craig Reynolds
 
 [More information about Craig and the research on steering behaviours](http://www.red3d.com/cwr/)
+
+<br/>
+<br/>
+
+# Project source code
+
+The project is uploaded to my GitHub page. Use the link below to study the course code and comment.
+
+[https://github.com/serge-sedelnikov/CraigReynoldsDemos](https://github.com/serge-sedelnikov/CraigReynoldsDemos)
+
+The project is built with [Svelte](https://svelte.dev/) and [p5js](https://p5js.org/).

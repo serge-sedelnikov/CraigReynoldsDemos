@@ -18,12 +18,6 @@
     });
 </script>
 
-<style>
-    .markdownContainer p img {
-        width: 40%;
-    }
-</style>
-
 {#if !content}...{/if}
 
 <div bind:this={element} class="markdownContainer" />
