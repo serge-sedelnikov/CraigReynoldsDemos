@@ -10,6 +10,14 @@
 
 The project is built with [Svelte](https://svelte.dev/) and [p5js](https://p5js.org/).
 
+# Online
+
+Find this project deployed here:
+
+[https://sedesteeringbehavior.z16.web.core.windows.net](https://sedesteeringbehavior.z16.web.core.windows.net)
+
+![screenshot](screenshot.png)
+
 # Run locally
 
 ```
